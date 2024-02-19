@@ -1,0 +1,16 @@
+{
+  "extends": "@brizy/tsconfig/base.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": true,
+    "declarationMap": false,
+    "baseUrl": "src",
+    "noEmit": false,
+    "outDir": "dist",
+    "preserveWatchOutput": true,
+    "inlineSources": false,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts"]
+}
