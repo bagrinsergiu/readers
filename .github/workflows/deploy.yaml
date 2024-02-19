@@ -1,0 +1,59 @@
+name: "Publish to NPM"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch name"
+        required: true
+        default: "main"
+        type: string
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: [ self-hosted, tester ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install --unsafe-perm
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Prettier
+        run: npm run prettier-check
+
+      - name: Typescript
+        run: npm run tsc
+
+      - name: Tests
+        run: npm run test -- -- -- --verbose --maxWorkers=$MAX_CPUS
+
+  deploy:
+    needs: tests
+    name: Build and publish
+    if: success()
+    runs-on: [ self-hosted, tester ]
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create deploy
+        run: npm version patch
+
+      - name: Publish deploy
+        if: success()
+        run: |
+          npm publish --access public
