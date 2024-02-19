@@ -1,3 +1,4 @@
+// @ts-ignore
 const path = require("path");
 
 module.exports = {
