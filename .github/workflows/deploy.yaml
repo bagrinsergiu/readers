@@ -8,11 +8,15 @@ on:
         required: true
         default: "main"
         type: string
-
+      version:
+        description: "dsad"
+        required: false
+        type: string
 jobs:
   tests:
     name: Tests
-    runs-on: [ self-hosted, tester ]
+#    runs-on: [ self-hosted, tester ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -23,7 +27,7 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install --unsafe-perm
+        run: npm install
 
       - name: Lint
         run: npm run lint
@@ -35,7 +39,7 @@ jobs:
         run: npm run tsc
 
       - name: Tests
-        run: npm run test -- -- -- --verbose --maxWorkers=$MAX_CPUS
+        run: npm run test
 
   deploy:
     needs: tests
@@ -50,10 +54,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Create deploy
-        run: npm version patch
-
-      - name: Publish deploy
-        if: success()
-        run: |
-          npm publish --access public
+#      - name: Create deploy
+#        run: npm version patch
+#
+#      - name: Publish deploy
+#        if: success()
+#        run: npm publish --access public
+#
+#      - name: push
+#        if: success()
+#        run: git push --tags
