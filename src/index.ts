@@ -5,3 +5,4 @@ export * as Num from "./number";
 export * as Obj from "./object";
 export { pipe } from "./pipe";
 export * as Str from "./string";
+export * as Err from "./errors";
